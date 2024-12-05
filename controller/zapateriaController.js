@@ -15,11 +15,13 @@ const upload = multer({ storage: storage });
 
 const addZapato = (req, res) => {
     const { nombre, marca, talla, precio, cantidad } = req.body;
+    console.log('Imagen:', req.file);
+    console.log('datos recibidos:', req.body);
     let imagen = req.file ? req.file.path.replace(/\\/g, '/') : null;
 
     const query = 'INSERT INTO zapato (nombre, marca, talla, precio, cantidad, imagen) VALUES (?, ?, ?, ?, ?, ?)';
     bd.query(query, [nombre, marca, talla, precio, cantidad, imagen], (err, result) => {
-        if (err) throw err;
+        if (err) return res.status(500).json({ success: false, message: 'Internal server error' });
         res.json({ success: true, message: 'Zapato added', data: result });
     });
 };
@@ -45,6 +47,8 @@ const getZapato = (req, res) => {
 
 const updateZapato = (req, res) => {
     const { nombre, marca, talla, precio, cantidad } = req.body;
+    console.log('Imagen:', req.file);
+    console.log('datos recibidos:', req.body);
     let imagen = req.file ? req.file.path.replace(/\\/g, '/') : req.body.imagen;
 
     const query = 'UPDATE zapato SET nombre = ?, marca = ?, talla = ?, precio = ?, cantidad = ?, imagen = ? WHERE id = ?';
@@ -57,7 +61,8 @@ const updateZapato = (req, res) => {
 const deleteZapato = (req, res) => {
     const query = 'DELETE FROM zapato WHERE id = ?';
     bd.query(query, [req.params.id], (err, result) => {
-        if (err) throw err;
+        if (err)
+            return res.status(500).json({ success: false, message: 'Internal server error' });
         res.json({ success: true, message: 'Zapato deleted', data: result });
     });
 };
