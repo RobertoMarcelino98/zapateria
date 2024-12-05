@@ -1,4 +1,4 @@
-const { database: bd } = require('../models/database');
+const bd = require('../models/database');
 const multer = require('multer');
 const path = require('path');
 
@@ -55,6 +55,7 @@ const updateZapato = (req, res) => {
     bd.query(query, [nombre, marca, talla, precio, cantidad, imagen, req.params.id], (err, result) => {
         if (err) throw err;
         res.json({ success: true, message: 'Zapato actualizado', data: result });
+        console.log('Zapato actualizado:', result);
     });
 };
 
