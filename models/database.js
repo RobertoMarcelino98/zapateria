@@ -1,6 +1,7 @@
-import mysql from 'mysql2';
+const mysql = require('mysql2');
 
-// Configuración de la base de datos
+//configuracion de la bd
+//host username, password y bd
 const connection = mysql.createConnection({
     host: 'bu8mu03ruhiuw6inbyav-mysql.services.clever-cloud.com',
     user: 'ux7yanqdxz1zug98',
@@ -8,10 +9,11 @@ const connection = mysql.createConnection({
     database: 'bu8mu03ruhiuw6inbyav'
 });
 
-// Conectar a la base de datos
+
+//conectar a la bd
 connection.connect((error) => {
-    if (error) throw error;
+    if (error)throw error;
     console.log('Conectado a la base de datos');
 });
 
-export default connection;
+module.exports = connection;
