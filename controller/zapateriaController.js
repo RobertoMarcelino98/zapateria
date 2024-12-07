@@ -21,7 +21,7 @@ const addZapato = (req, res) => {
 
     const query = 'INSERT INTO zapato (nombre, marca, talla, precio, cantidad, imagen) VALUES (?, ?, ?, ?, ?, ?)';
     bd.query(query, [nombre, marca, talla, precio, cantidad, imagen], (err, result) => {
-        if (err) return res.status(500).json({ success: false, message: 'Error interno del servidor' });
+        if (err) throw err;
         res.json({ success: true, message: 'Zapato añadido', data: result });
     });
 };
