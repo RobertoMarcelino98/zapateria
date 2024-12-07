@@ -69,9 +69,9 @@ const deleteZapato = (req, res) => {
 };
 
 module.exports = {
-    addZapato: [upload.single('imagenArchivo'), addZapato],
+    addZapato: [upload.single('imagen'), addZapato],
     allZapatos,
     getZapato,
-    updateZapato: [upload.single('imagenArchivo'), updateZapato],
+    updateZapato: [upload.single('imagen'), updateZapato],
     deleteZapato
 };
