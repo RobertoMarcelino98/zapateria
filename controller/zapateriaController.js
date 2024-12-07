@@ -1,6 +1,6 @@
-const bd = require('../models/database');
-const multer = require('multer');
-const path = require('path');
+import bd from '../models/database';
+import multer from 'multer';
+import path from 'path';
 
 // Configuración de multer para guardar archivos
 const storage = multer.diskStorage({
@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-const addZapato = (req, res) => {
+const addZapatoHandler = (req, res) => {
     const { nombre, marca, talla, precio, cantidad } = req.body;
     console.log('Imagen:', req.file);
     console.log('datos recibidos:', req.body);
@@ -25,6 +25,8 @@ const addZapato = (req, res) => {
         res.json({ success: true, message: 'Zapato añadido', data: result });
     });
 };
+
+const addZapato = [upload.single('imagen'), addZapatoHandler];
 
 const allZapatos = (_, res) => {
     const query = 'SELECT * FROM zapato';
@@ -45,7 +47,7 @@ const getZapato = (req, res) => {
     });
 };
 
-const updateZapato = (req, res) => {
+const updateZapatoHandler = (req, res) => {
     const { nombre, marca, talla, precio, cantidad } = req.body;
     console.log('Imagen:', req.file);
     console.log('datos recibidos:', req.body);
@@ -59,6 +61,8 @@ const updateZapato = (req, res) => {
     });
 };
 
+const updateZapato = [upload.single('imagen'), updateZapatoHandler];
+
 const deleteZapato = (req, res) => {
     const query = 'DELETE FROM zapato WHERE id = ?';
     bd.query(query, [req.params.id], (err, result) => {
@@ -68,10 +72,10 @@ const deleteZapato = (req, res) => {
     });
 };
 
-module.exports = {
-    addZapato: [upload.single('imagen'), addZapato],
+export {
+    addZapato,
     allZapatos,
     getZapato,
-    updateZapato: [upload.single('imagen'), updateZapato],
+    updateZapato,
     deleteZapato
 };
