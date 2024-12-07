@@ -1,19 +1,19 @@
-import bd from '../models/database';
-import multer from 'multer';
-import path from 'path';
+const bd = require('../models/database');
+const multer = require('multer');
+const path = require('path');
 
 // Configuración de multer para guardar archivos
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
+    destination: function (_, _, cb) {
         cb(null, 'uploads/');
     },
-    filename: function (req, file, cb) {
+    filename: function (_, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
 const upload = multer({ storage: storage });
 
-const addZapatoHandler = (req, res) => {
+const addZapato = (req, res) => {
     const { nombre, marca, talla, precio, cantidad } = req.body;
     console.log('Imagen:', req.file);
     console.log('datos recibidos:', req.body);
@@ -25,8 +25,6 @@ const addZapatoHandler = (req, res) => {
         res.json({ success: true, message: 'Zapato añadido', data: result });
     });
 };
-
-const addZapato = [upload.single('imagen'), addZapatoHandler];
 
 const allZapatos = (_, res) => {
     const query = 'SELECT * FROM zapato';
@@ -47,7 +45,7 @@ const getZapato = (req, res) => {
     });
 };
 
-const updateZapatoHandler = (req, res) => {
+const updateZapato = (req, res) => {
     const { nombre, marca, talla, precio, cantidad } = req.body;
     console.log('Imagen:', req.file);
     console.log('datos recibidos:', req.body);
@@ -61,8 +59,6 @@ const updateZapatoHandler = (req, res) => {
     });
 };
 
-const updateZapato = [upload.single('imagen'), updateZapatoHandler];
-
 const deleteZapato = (req, res) => {
     const query = 'DELETE FROM zapato WHERE id = ?';
     bd.query(query, [req.params.id], (err, result) => {
@@ -72,10 +68,10 @@ const deleteZapato = (req, res) => {
     });
 };
 
-export {
-    addZapato,
+module.exports = {
+    addZapato: [upload.single('imagen'), addZapato],
     allZapatos,
     getZapato,
-    updateZapato,
+    updateZapato: [upload.single('imagen'), updateZapato],
     deleteZapato
 };
